@@ -1,0 +1,9 @@
+%% -*- erlang -*-
+{application, webcli,
+ [{description, "webcli"},
+  {vsn, "0.1"},
+  {modules, []},
+  {registered, []},
+  {mod, {'webcli_app', []}},
+  {env, []},
+  {applications, [kernel, stdlib, crypto]}]}.
