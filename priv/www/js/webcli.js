@@ -205,6 +205,7 @@ $(document).ready(function() {
                     redirect();
                 });
     }
+
     function forbidden_cmd(cmd) {
         var args = cmd.split(/[ \t][ \t]*/);
         var forbidden = {"vi": true,
@@ -214,7 +215,6 @@ $(document).ready(function() {
             };
         return forbidden[args[0]];
     }
-
 
     function sendMsg() {
         var data = $('.cli-cmd-input').val();
@@ -252,6 +252,15 @@ $(document).ready(function() {
         case 27: //escape
             clearInputBox();
             break;
+        case 9: //tab
+            var ev = $.Event('keypress', {which: 32});
+            $(this).trigger(ev);
+            $(this).trigger(ev);
+            $(this).trigger(ev);
+            $(this).trigger(ev);
+            e.preventDefault();
+            break;
+            
         }
     });
 
