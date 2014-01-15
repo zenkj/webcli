@@ -60,6 +60,11 @@ html>body #window-wrapper {
 .cli-cmd-wrapper {
     position: absolute;
     height: 80px;
+    width: 100%;
     bottom: 0px;
+}
+
+.cli-cmd-input {
+    width: 80%;
 }
 

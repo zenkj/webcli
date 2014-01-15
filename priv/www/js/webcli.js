@@ -205,15 +205,34 @@ $(document).ready(function() {
                     redirect();
                 });
     }
+    function forbidden_cmd(cmd) {
+        var args = cmd.split(/[ \t][ \t]*/);
+        var forbidden = {"vi": true,
+            "vim": true,
+            "emacs": true,
+            "xemacs": true
+            };
+        return forbidden[args[0]];
+    }
+
+
     function sendMsg() {
         var data = $('.cli-cmd-input').val();
         var trimed = $.trim(data);
         if (trimed && trimed.length > 1 && trimed.charAt(0) == ':') {
             var cmd = $.trim(trimed.substring(1));
             if (cmd == 'q') {
+                post('/clicmd', {cmd: 'close-clisession', csid: g_currentcsid},
+                    function(result) {
+                        $(".cli-cmd-input").css('disabled', true);
+                        $(".cli-cmd-enter").css('disabled', true);
+                        logmsg('stdin', "session stopped");
+                    });
             } else if (cmd == 'sp') {
             } else if (cmd == 'vs') {
             }
+        } else if (forbidden_cmd(trimed)) {
+            logmsg('stdin', 'command "' + trimed + '" is not allowed in webcli');
         } else {
             data = data + '\n';
             stdin(data);
