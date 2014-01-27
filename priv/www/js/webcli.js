@@ -38,6 +38,8 @@ $(document).ready(function() {
                 var data = msg.data;
                 var logclass = type;
 
+                type = 'stdout';
+
                 logmsg(type, data, csid);
             }
         }
@@ -188,9 +190,14 @@ $(document).ready(function() {
             csid = g_currentcsid;
         }
         var t2h = terminal2html(msg);
-        var str = '<pre class="' + type + '">' + t2h + '</pre>';
         var logdom = $('#cs-' +csid+' .cli-log');
-        $(str).appendTo(logdom);
+        var predom = $('pre:last', logdom);
+        if (predom.hasClass(type)) {
+            predom.html(predom.html()+t2h);
+        } else {
+            var str = '<pre class="' + type + '">' + t2h + '</pre>';
+            $(str).appendTo(logdom);
+        }
         var wrapper = $('#cs-' +csid+' .cli-log-wrapper');
         wrapper.scrollTop(logdom.height());
     }
@@ -234,6 +241,7 @@ $(document).ready(function() {
         } else if (forbidden_cmd(trimed)) {
             logmsg('stdin', 'command "' + trimed + '" is not allowed in webcli');
         } else {
+            data = (data.length>0 && data.charAt(0)=='\\') ? data.substring(1) : data;
             data = data + '\n';
             stdin(data);
         }
